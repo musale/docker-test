@@ -7,7 +7,7 @@ python manage.py initadmin --username=admin --password=yz2rsMcaj3UJ3daRswBd --se
 
 python manage.py add_sites --settings=$DJANGO_SETTINGS_MODULE
 
-celery flower
+# celery flower
 
 # debugging with default server uncomment this and comment the gunicorn one
 # python manage.py runserver 0.0.0.0:3000 --settings=$DJANGO_SETTINGS_MODULE

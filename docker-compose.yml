@@ -13,6 +13,7 @@ web:
   ports:
     - '4000:90'
     - '4001:90'
+    - '5555:5555'
   links:
     - db
   environment:
