@@ -1,0 +1,19 @@
+db:
+  image: postgres:9.5
+  environment:
+    - POSTGRES_DB=dockertestproject
+    - POSTGRES_PASSWORD=mysecretpassword
+  ports:
+    - '5432:5432'
+
+web:
+  build: .
+  volumes:
+    - ./:/usr/src/app
+  ports:
+    - '4000:90'
+    - '4001:90'
+  links:
+    - db
+  environment:
+    - 'DATABASE_URL=postgres://postgres:mysecretpassword@db:5432/dockertestproject'
