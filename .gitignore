@@ -92,4 +92,7 @@ ENV/
 
 .idea
 /static
+# compiled python files
+*.pyc
 
+.idea/workspace.xml
