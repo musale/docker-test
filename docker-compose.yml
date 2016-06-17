@@ -3,8 +3,6 @@ db:
   environment:
     - POSTGRES_DB=dockertestproject
     - POSTGRES_PASSWORD=mysecretpassword
-  ports:
-    - '5432:5432'
 
 web:
   build: .
