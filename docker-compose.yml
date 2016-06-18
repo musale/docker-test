@@ -9,9 +9,7 @@ web:
   volumes:
     - ./:/usr/src/app
   ports:
-    - '4000:90'
-    - '4001:90'
-    - '5555:5555'
+    - '4000:80'
   links:
     - db
   environment:

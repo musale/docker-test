@@ -1,3 +1,3 @@
 FROM python:2-onbuild
-EXPOSE 900
+EXPOSE 80
 CMD ["/bin/bash", "./run.sh"]
