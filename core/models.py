@@ -2,25 +2,15 @@ from django.db import models
 
 
 class Broker(models.Model):
-    PAID = 'PAID'
-    UNPAID = 'UNPAID'
-    PAYMENT_CHOICES = (
-        (PAID, PAID),
-        (UNPAID, UNPAID)
-    )
     name = models.CharField(u'Name of Broker', max_length=250, null=True, blank=True)
     contact = models.CharField(u'Contact of Broker', max_length=250, null=True, blank=True)
-    payment_status = models.CharField(u'Payment Status', max_length=250, null=True, blank=True, choices=PAYMENT_CHOICES,
-                                      default=UNPAID)
-    amount = models.DecimalField(
-        u"Amount",
-        max_digits=9,
-        decimal_places=2,
-        default=00.00
-    )
 
     def __unicode__(self):
-        return '{0} {1} {2}'.format(self.name, self.contact, self.payment_status)
+        return '{0} {1}'.format(self.name, self.contact)
+
+    class Meta:
+        verbose_name = 'Broker'
+        verbose_name_plural = 'Brokers'
 
 
 class GarbagePoint(models.Model):
@@ -39,11 +29,16 @@ class GarbagePoint(models.Model):
     contacts = models.CharField(u'Contacts', max_length=250, null=True, blank=True)
     paper_size = models.CharField(u'Paper Size', max_length=250, null=True, blank=True, choices=PAPER_SIZES,
                                   default=SMALLPAPER)
+    number_of_papers = models.CharField(u'Number of Papers', max_length=250, null=True, blank=True)
     created_at = models.DateTimeField(u'Creation Date', auto_now=True)
     updated_at = models.DateTimeField(u'Update Date', auto_now_add=True)
 
     def __unicode__(self):
-        return "{0} {1}".format(self.location, self.type_of_location)
+        return "{0}::{1}".format(self.location, self.type_of_location)
+
+    class Meta:
+        verbose_name = 'Garbage Collection Area'
+        verbose_name_plural = 'Garbage Collection Areas'
 
 
 class Cost(models.Model):
@@ -64,15 +59,37 @@ class Cost(models.Model):
     def __unicode__(self):
         return '{0} {1} {2}'.format(self.name, self.description, self.amount)
 
+    class Meta:
+        verbose_name = 'Cost'
+        verbose_name_plural = 'Costs'
+
 
 class Collection(models.Model):
     """
     A garbage collection made
     """
+    PAID = 'PAID'
+    UNPAID = 'UNPAID'
+    PAYMENT_CHOICES = (
+        (PAID, PAID),
+        (UNPAID, UNPAID)
+    )
     collection_area = models.ForeignKey(GarbagePoint, related_name="collection_area")
     broker = models.ForeignKey(Broker, related_name="broker", blank=True, null=True)
+    payment_status = models.CharField(u'Payment Status', max_length=250, null=True, blank=True, choices=PAYMENT_CHOICES,
+                                      default=UNPAID)
+    amount = models.DecimalField(
+        u"Amount",
+        max_digits=9,
+        decimal_places=2,
+        default=00.00
+    )
     created_at = models.DateTimeField(u'Creation Date', auto_now=True)
     updated_at = models.DateTimeField(u'Update Date', auto_now_add=True)
 
     def __unicode__(self):
         return '{0} {1} {2}'.format(self.collection_area, self.created_at, self.updated_at)
+
+    class Meta:
+        verbose_name = 'Collected Garbage Record'
+        verbose_name_plural = 'Collected Garbage Records'
