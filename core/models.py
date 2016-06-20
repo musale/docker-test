@@ -6,7 +6,7 @@ class Broker(models.Model):
     contact = models.CharField(u'Contact of Broker', max_length=250, null=True, blank=True)
 
     def __unicode__(self):
-        return '{0} {1}'.format(self.name, self.contact)
+        return '{0}'.format(self.name)
 
     class Meta:
         verbose_name = 'Broker'
