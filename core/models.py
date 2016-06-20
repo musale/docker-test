@@ -27,8 +27,7 @@ class GarbagePoint(models.Model):
     type_of_location = models.CharField(u'Type of Location', max_length=250, null=True, blank=True)
     person_in_charge = models.CharField(u'Person in Charge', max_length=250, null=True, blank=True)
     contacts = models.CharField(u'Contacts', max_length=250, null=True, blank=True)
-    paper_size = models.CharField(u'Paper Size', max_length=250, null=True, blank=True, choices=PAPER_SIZES,
-                                  default=SMALLPAPER)
+    paper_size = models.CharField(u'Paper Size', max_length=250, null=True, blank=True, choices=PAPER_SIZES)
     number_of_papers = models.CharField(u'Number of Papers', max_length=250, null=True, blank=True)
     created_at = models.DateTimeField(u'Creation Date', auto_now=True)
     updated_at = models.DateTimeField(u'Update Date', auto_now_add=True)
