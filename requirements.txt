@@ -5,3 +5,4 @@ dj-database-url==0.3.0
 dj-static==0.0.6
 celery==3.1.14
 flower==0.7.3
+django-registration-redux
