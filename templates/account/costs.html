@@ -1,5 +1,82 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load  render_table from django_tables2 %}
+{# Load the tag library #}
+{% load bootstrap3 %}
 
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
 {% block content %}
-    <p>costs</p>
+    <form accept-charset="UTF-8" action="{% url 'costs' %}" method="post">{% csrf_token %}
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i><input type="text" id="daterange" name="daterange" value={{ daterange }} class="form-control"></span>
+                    <button type="submit" class="btn btn-small btn-warning">Search</button></span>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="btn-group">
+                    <a href="{% url 'add-cost' %}" class="btn btn-primary"> Add cost</a>
+                </div>
+
+                <div class="btn-group">
+                    <button disabled type="submit" name="download" id="download" value="1" class="btn btn-success">
+                        Download Selected
+                    </button>
+                </div>
+            </div>
+        </div>
+        <hr>
+        {% render_table cost_table %}
+    </form>
+{% endblock %}
+{% block extra_js %}
+    {{ block.super }}
+    <script src={% static "js/account.js" %}></script>
+    <script type="text/javascript">
+        $('#download').click(function () {
+            //check if checkbox is checked
+            if ($(this).is(':checked')) {
+
+                $('#downloadBtn').removeAttr('disabled'); //enable input
+
+            } else {
+                $('#downloadBtn').attr('disabled', true); //disable input
+
+            }
+        });
+    </script>
+    <script type="text/javascript">
+$(function() {
+
+    var start = moment().subtract(29, 'days');
+    var end = moment();
+
+    function cb(start, end) {
+        $('#daterange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+    }
+
+    $('input[name="daterange"]').daterangepicker({
+        startDate: start,
+        endDate: end,
+        "alwaysShowCalendars": true,
+        ranges: {
+           'Today': [moment(), moment()],
+           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+           'This Month': [moment().startOf('month'), moment().endOf('month')],
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+    }, cb);
+
+    cb(start, end);
+
+});
+</script>
 {% endblock %}
