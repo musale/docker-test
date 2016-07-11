@@ -277,6 +277,76 @@ class AddCostsView(View):
 
 class AreasView(TemplateView):
     template_name = 'account/areas.html'
+    table_class = AreasTable
 
     def get(self, request, *args, **kwargs):
         return super(AreasView, self).get(request, args, kwargs)
+
+    def get_queryset(self):
+        queryset = GarbagePoint.objects.all()
+        return queryset
+
+    def dispatch(self, request, *args, **kwargs):
+        return super(AreasView, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request):
+        context = {}
+        form = AreasForm(request.POST or None)
+        area = GarbagePoint.objects.all()
+        table = AreasTable(area)
+        RequestConfig(request).configure(table)
+        context['area_table'] = table
+        context['area_form'] = form
+
+        if form.is_valid():
+            form.save()
+            return render(request, 'account/areas.html', context)
+        return render(request, 'account/areas.html', context)
+
+    def get(self, request, *args, **kwargs):
+        return super(AreasView, self).get(request, args, kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(AreasView, self).get_context_data(**kwargs)
+        area = GarbagePoint.objects.all()
+        table = AreasTable(area)
+        # table.paginate(page=self.request.GET.get('page', 1), per_page=self.paginate_by)
+        # self.table_to_report = RequestConfig(self.request).configure(table)
+        form = AreasForm()
+        RequestConfig(self.request).configure(table)
+        context['area_table'] = table
+        context['area_form'] = form
+        return context
+
+
+class AddAreaView(View):
+    def post(self, request):
+        form = CreateAreaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('areas'))
+        return render(request, 'account/add-area.html', {'form': form})
+
+    def get(self, request):
+        form = CreateAreaForm()
+        return render(request, 'account/add-area.html', {'form': form})
+
+
+class UpdateAreaView(UpdateView):
+    model = GarbagePoint
+    form_class = AreaUpdateForm
+    success_url = '/areas'
+    template_name = 'account/update-areas.html'
+
+    def get(self, request, *args, **kwargs):
+        """
+        Overriding this method to get only the groups that are associated with the logged in user
+        """
+        self.object = self.get_object()
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def get_queryset(self):
+        queryset = super(UpdateAreaView, self).get_queryset()
+        return queryset
