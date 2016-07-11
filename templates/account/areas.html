@@ -1,2 +1,26 @@
 {% extends 'base.html' %}
-{% block content %}<p>areas</p>{% endblock %}
+{% load static %}
+{% load  render_table from django_tables2 %}
+{# Load the tag library #}
+{% load bootstrap3 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+{% block content %}
+    <form accept-charset="UTF-8" action="{% url 'areas' %}" method="post">{% csrf_token %}
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="btn-group">
+                    <a href="{% url 'add-area' %}" class="btn btn-primary"> Add garbage collection area</a>
+                </div>
+
+            </div>
+        </div>
+        <hr>
+        {% render_table area_table %}
+    </form>
+{% endblock %}
