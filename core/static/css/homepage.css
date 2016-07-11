@@ -24,14 +24,26 @@
     display: block;
     text-decoration: none;
     color: whitesmoke;
+    font-family: "Ubuntu Beta", "Bitstream Vera Sans", DejaVu Sans, Tahoma, sans-serif;
+    font-size: small;
 }
 
 .sidebar-nav li a:hover{
     background-color: #609ab6;
+    border-radius: 5px;
+    border: solid goldenrod 1px;
 }
 
 /*mainpage content*/
 .page-content-wrapper{
     width: 100%;
     padding: 60px 10px 10px 250px;
+}
+
+.active{
+    border-radius: 5px;
+    border: solid gold 1px;
+    background-color: #003366;
+    font-family: "Ubuntu Beta", "Bitstream Vera Sans", DejaVu Sans, Tahoma, sans-serif;
+    font-size: small;
 }
