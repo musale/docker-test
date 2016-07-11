@@ -11,7 +11,8 @@
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet"
               href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+        <link rel="stylesheet" type="text/css"
+              href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css"/>
     {% endblock %}
 </head>
 <body>
@@ -26,7 +27,7 @@
             <li class="nav-item btn-group pull-right">
                 <a class="dropdown-toggle nav-link" type="button" id="dropdownMenu1" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
-                    {{ request.user.username }}
+                    <i class="fa fa-user" aria-hidden="true"></i> {{ request.user.username }}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
                     <a class="dropdown-item" href="{% url 'auth_logout' %}">Logout</a>
@@ -38,10 +39,17 @@
 <div class="wrapper">
     <div class="sidebar-wrapper">
         <ul class="sidebar-nav">
-            <li><a href="{% url 'dashboard' %}">COLLECTIONS</a></li>
-            <li><a href="{% url 'costs' %}">COSTS</a></li>
-            <li><a href="{% url 'areas' %}">GARBAGE AREAS</a></li>
-            <li><a href="{% url 'brokers' %}">BROKERS</a></li>
+            <li><a {% if tab == 'collection' %}class="active"{% endif %} href="{% url 'dashboard' %}"><i
+                    class="fa fa-trash-o" aria-hidden="true"></i> COLLECTIONS</a></li>
+            <li><a {% if tab == 'cost' %}class="active"{% endif %} href="{% url 'costs' %}"><i class="fa fa-money"
+                                                                                               aria-hidden="true"></i>
+                COSTS</a></li>
+            <li><a {% if tab == 'area' %}class="active"{% endif %} href="{% url 'areas' %}"><i class="fa fa-map-marker"
+                                                                                               aria-hidden="true"></i>
+                GARBAGE AREAS</a></li>
+            <li><a {% if tab == 'broker' %}class="active"{% endif %} href="{% url 'brokers' %}"><i class="fa fa-users"
+                                                                                                   aria-hidden="true"></i>
+                BROKERS</a></li>
         </ul>
     </div>
     <div class="page-content-wrapper">
