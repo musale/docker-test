@@ -49,6 +49,7 @@ class CollectionsView(ListView):
         RequestConfig(request).configure(table)
         context['collection_table'] = table
         context['collection_form'] = form
+        context['tab'] = 'collection'
 
         if form.is_valid():
             form.save()
@@ -115,6 +116,7 @@ class CollectionsView(ListView):
         RequestConfig(self.request).configure(table)
         context['collection_table'] = table
         context['collection_form'] = form
+        context['tab'] = 'collection'
         return context
 
 
@@ -202,6 +204,7 @@ class BrokersView(TemplateView):
         RequestConfig(self.request).configure(table)
         context['broker_table'] = table
         context['broker_form'] = form
+        context['tab'] = 'broker'
         return context
 
 
@@ -309,6 +312,7 @@ class CostsView(ListView):
         RequestConfig(self.request).configure(table)
         context['cost_table'] = table
         context['cost_form'] = form
+        context['tab'] = 'cost'
         return context
 
 
@@ -386,6 +390,7 @@ class AreasView(TemplateView):
         RequestConfig(self.request).configure(table)
         context['area_table'] = table
         context['area_form'] = form
+        context['tab'] = 'area'
         return context
 
 
