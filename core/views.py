@@ -168,11 +168,111 @@ class BrokersView(TemplateView):
         return super(BrokersView, self).get(request, args, kwargs)
 
 
-class CostsView(TemplateView):
+class CostsView(ListView):
     template_name = 'account/costs.html'
+    table_class = CostTable
+
+    def get_queryset(self):
+        queryset = Cost.objects.all()
+        return queryset
+
+    def post(self, request):
+        context = {}
+        form = CostForm(request.POST or None)
+        costs = Cost.objects.all()
+        table = CostTable(costs)
+        RequestConfig(request).configure(table)
+        context['cost_table'] = table
+        context['cost_form'] = form
+
+        if form.is_valid():
+            form.save()
+            return render(request, 'account/costs.html', context)
+
+        if request.POST.get("selection", False):
+            pks = request.POST.getlist("selection")
+            selected_costs = Cost.objects.filter(pk__in=pks)
+            download = request.POST.get("download", False)
+            if download:
+                book = xlwt.Workbook(encoding='utf8')
+                # Adding style for cell
+                # Create Alignment
+                alignment = xlwt.Alignment()
+
+                # horz May be: HORZ_GENERAL, HORZ_LEFT, HORZ_CENTER, HORZ_RIGHT,
+                # HORZ_FILLED, HORZ_JUSTIFIED, HORZ_CENTER_ACROSS_SEL,
+                # HORZ_DISTRIBUTED
+                alignment.horz = xlwt.Alignment.HORZ_LEFT
+                # May be: VERT_TOP, VERT_CENTER, VERT_BOTTOM, VERT_JUSTIFIED,
+                # VERT_DISTRIBUTED
+                alignment.vert = xlwt.Alignment.VERT_TOP
+                style = xlwt.XFStyle()  # Create Style
+                style.alignment = alignment  # Add Alignment to Style
+
+                sheet = book.add_sheet('Garbage Collections')
+                sheet.write(0, 0, 'Name')
+                sheet.write(0, 1, 'Description ')
+                sheet.write(0, 2, 'Amount')
+                sheet.write(0, 3, 'Creation Date')
+                sheet.write(0, 4, 'Update Date')
+                initial = 0
+                for cost in selected_costs:
+                    initial += 1
+                    sheet.write(initial, 0, cost.name)
+                    sheet.write(initial, 1, cost.description)
+                    sheet.write(initial, 2, cost.amount)
+                    sheet.write(initial, 3, formats.date_format(cost.created_at, "SHORT_DATETIME_FORMAT"))
+                    sheet.write(initial, 4, formats.date_format(cost.updated_at, "SHORT_DATETIME_FORMAT"))
+                response = HttpResponse(content_type='application/vnd.ms-excel')
+                response['Content-Disposition'] = 'attachment; filename=collection_areas.xls'
+                book.save(response)
+                return response
+        return render(request, 'account/costs.html', context)
+
+    def get_context_data(self, **kwargs):
+        context = super(CostsView, self).get_context_data(**kwargs)
+        cost = Cost.objects.all()
+        table = CostTable(cost)
+        # table.paginate(page=self.request.GET.get('page', 1), per_page=self.paginate_by)
+        # self.table_to_report = RequestConfig(self.request).configure(table)
+        form = CostForm()
+        RequestConfig(self.request).configure(table)
+        context['cost_table'] = table
+        context['cost_form'] = form
+        return context
+
+
+class UpdateCostView(UpdateView):
+    model = Cost
+    form_class = CostUpdateForm
+    success_url = '/costs'
+    template_name = 'account/update-cost.html'
 
     def get(self, request, *args, **kwargs):
-        return super(CostsView, self).get(request, args, kwargs)
+        """
+        Overriding this method to get only the groups that are associated with the logged in user
+        """
+        self.object = self.get_object()
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def get_queryset(self):
+        queryset = super(UpdateCostView, self).get_queryset()
+        return queryset
+
+
+class AddCostsView(View):
+    def post(self, request):
+        form = CreateCostForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('costs'))
+        return render(request, 'account/add--cost.html', {'form': form})
+
+    def get(self, request):
+        form = CreateCostForm()
+        return render(request, 'account/add--cost.html', {'form': form})
 
 
 class AreasView(TemplateView):
