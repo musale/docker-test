@@ -25,7 +25,9 @@ from core.views import *
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^brokers', login_required(BrokersView.as_view()), name='brokers'),
-    url(r'^areas', login_required(AreasView.as_view()), name='areas'),
+    url(r'^areas/$', login_required(AreasView.as_view()), name='areas'),
+    url(r'^areas/add/$', login_required(AddAreaView.as_view()), name='add-area'),
+    url(r'^areas/(?P<pk>[\w-]+)/update-area/$', login_required(UpdateAreaView.as_view()), name='update-area'),
     url(r'^costs/$', login_required(CostsView.as_view()), name='costs'),
     url(r'^costs/add/$', login_required(AddCostsView.as_view()), name='add-cost'),
     url(r'^costs/(?P<pk>[\w-]+)/update-cost/$', login_required(UpdateCostView.as_view()), name='update-cost'),
