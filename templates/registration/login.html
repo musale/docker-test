@@ -1,7 +1,51 @@
-<p class="well"> member login</p>
-    <form method="POST" action="" id="login-form">
-        {% csrf_token %}
-    <input class="form-control" type="text" placeholder="username" name="username" id="username">
-    <input class="form-control" type="password" name="password" id="password">
-    <button class="btn btn-success" id="login-btn">LOG IN</button>
-    </form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GC Demo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="row">
+    <hr>
+    <div class="col-md-3 col-md-offset-4">
+        <div class="card text-xs-center">
+            <div class="card-header">
+                <h4 class="card-title">LOGIN PAGE</h4>
+            </div>
+            <div class="card-block">
+                <div class="card-text">
+                    <form method="POST" action="" id="login-form">{% csrf_token %}
+                        <fieldset class="form-group">
+                            <label for="username">username</label>
+                            <input type="text" class="form-control" id="username" name="username"
+                                   placeholder="username">
+                        </fieldset>
+                        <fieldset class="form-group">
+                            <label for="password">password</label>
+                            <input type="password" class="form-control" id="password" name="password"
+                                   placeholder="password">
+                        </fieldset>
+                        <div class="card-footer ">
+                            <button class="btn btn-success btn-group-lg" id="login-btn">LOG IN</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--jQuery JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://www.atlasestateagents.co.uk/javascript/tether.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+        integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+        crossorigin="anonymous"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+</body>
