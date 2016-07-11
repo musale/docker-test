@@ -34,7 +34,18 @@ class CostTable(tables.Table):
 
 class AreasTable(tables.Table):
     edit = tables.LinkColumn('update-area', kwargs={"pk": tables.A("pk")}, orderable=False, empty_values=())
+
     class Meta:
         model = GarbagePoint
         attrs = {"class": "table table-striped table-bordered table-sm"}
         exclude = ['id']
+
+
+class BrokersTable(tables.Table):
+    edit = tables.LinkColumn('update-broker', kwargs={"pk": tables.A("pk")}, orderable=False, empty_values=())
+
+    class Meta:
+        model = Broker
+        attrs = {"class": "table table-striped table-bordered table-sm"}
+        exclude = ['id']
+
