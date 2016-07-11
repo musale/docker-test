@@ -163,9 +163,79 @@ class CustomLoginView(TemplateView):
 
 class BrokersView(TemplateView):
     template_name = 'account/brokers.html'
+    table_class = BrokersTable
 
     def get(self, request, *args, **kwargs):
         return super(BrokersView, self).get(request, args, kwargs)
+
+    def get_queryset(self):
+        queryset = Broker.objects.all()
+        return queryset
+
+    def dispatch(self, request, *args, **kwargs):
+        return super(BrokersView, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request):
+        context = {}
+        form = BrokersForm(request.POST or None)
+        broker = Broker.objects.all()
+        table = BrokersTable(broker)
+        RequestConfig(request).configure(table)
+        context['broker_table'] = table
+        context['broker_form'] = form
+
+        if form.is_valid():
+            form.save()
+            return render(request, 'account/brokers.html', context)
+        return render(request, 'account/brokers.html', context)
+
+    def get(self, request, *args, **kwargs):
+        return super(BrokersView, self).get(request, args, kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(BrokersView, self).get_context_data(**kwargs)
+        broker = Broker.objects.all()
+        table = BrokersTable(broker)
+        # table.paginate(page=self.request.GET.get('page', 1), per_page=self.paginate_by)
+        # self.table_to_report = RequestConfig(self.request).configure(table)
+        form = BrokersForm()
+        RequestConfig(self.request).configure(table)
+        context['broker_table'] = table
+        context['broker_form'] = form
+        return context
+
+
+class AddBrokerView(View):
+    def post(self, request):
+        form = BrokersForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('brokers'))
+        return render(request, 'account/add-broker.html', {'form': form})
+
+    def get(self, request):
+        form = BrokersForm()
+        return render(request, 'account/add-broker.html', {'form': form})
+
+
+class UpdateBrokerView(UpdateView):
+    model = Broker
+    form_class = BrokerUpdateForm
+    success_url = '/brokers'
+    template_name = 'account/update-broker.html'
+
+    def get(self, request, *args, **kwargs):
+        """
+        Overriding this method to get only the groups that are associated with the logged in user
+        """
+        self.object = self.get_object()
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def get_queryset(self):
+        queryset = super(UpdateBrokerView, self).get_queryset()
+        return queryset
 
 
 class CostsView(ListView):
