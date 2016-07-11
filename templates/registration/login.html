@@ -1,11 +1,7 @@
-{% extends 'base.html' %}
-
-{% block content %}
-    <p class="well"> member login</p>
+<p class="well"> member login</p>
     <form method="POST" action="" id="login-form">
         {% csrf_token %}
     <input class="form-control" type="text" placeholder="username" name="username" id="username">
     <input class="form-control" type="password" name="password" id="password">
     <button class="btn btn-success" id="login-btn">LOG IN</button>
     </form>
-{% endblock %}
