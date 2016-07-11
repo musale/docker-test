@@ -30,3 +30,11 @@ class CostTable(tables.Table):
         attrs = {"class": "table table-striped table-bordered table-sm"}
         sequence = ("selection",)
         exclude = ['id']
+
+
+class AreasTable(tables.Table):
+    edit = tables.LinkColumn('update-area', kwargs={"pk": tables.A("pk")}, orderable=False, empty_values=())
+    class Meta:
+        model = GarbagePoint
+        attrs = {"class": "table table-striped table-bordered table-sm"}
+        exclude = ['id']
