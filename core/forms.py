@@ -99,3 +99,19 @@ class CreateAreaForm(ModelForm):
         cleaned_data = super(CreateAreaForm, self).clean()
         return cleaned_data
 
+
+class BrokersForm(ModelForm):
+    class Meta:
+        model = Broker
+        fields = '__all__'
+
+
+class BrokerUpdateForm(ModelForm):
+    class Meta:
+        model = Broker
+        fields = '__all__'
+
+    def _get_validation_exclusions(self):
+        exclude = super(BrokerUpdateForm, self)._get_validation_exclusions()
+        return exclude
+
