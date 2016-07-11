@@ -26,11 +26,13 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^brokers', login_required(BrokersView.as_view()), name='brokers'),
     url(r'^areas', login_required(AreasView.as_view()), name='areas'),
-    url(r'^costs', login_required(CostsView.as_view()), name='costs'),
+    url(r'^costs/$', login_required(CostsView.as_view()), name='costs'),
+    url(r'^costs/add/$', login_required(AddCostsView.as_view()), name='add-cost'),
+    url(r'^costs/(?P<pk>[\w-]+)/update-cost/$', login_required(UpdateCostView.as_view()), name='update-cost'),
     url(r'^collections/$', login_required(CollectionsView.as_view()), name='dashboard'),
     url(r'^collections/add/$', login_required(AddCollectionsView.as_view()), name='add-collection'),
+    url(r'^collections/(?P<pk>[\w-]+)/update-collection/$', login_required(UpdateCollectionView.as_view()), name='update-collection'),
     url(r'^accounts/', include('registration.backends.default.urls')),
-    url(r'^collections/(?P<pk>[\w-]+)/update-collection/$', login_required(UpdateCollectionView.as_view()), name='update-collection')
 ]
 
 urlpatterns += staticfiles_urlpatterns()
